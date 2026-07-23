@@ -1,4 +1,4 @@
-# Micromag Python
+# Classical Lattice Magnetization Simulation
 
 A lightweight, high-performance Python application for classical micromagnetic lattice simulations, accelerated via **CuPy** and the GPU.
 
@@ -8,7 +8,7 @@ A lightweight, high-performance Python application for classical micromagnetic l
 
 During my PhD, I worked with my research group on developing simulation software for classical micromagnetic lattices written in **C++**. 
 
-This repository is a private project where I leverage that scientific expertise to build a basic, more accessible Python version tailored for enthusiasts, researchers, and anyone interested in micromagnetism.
+This repository is a private project where I use that scientific expertise to build a basic, more accessible Python version tailored for enthusiasts, researchers, and anyone interested in micromagnetism.
 
 ## What the Program Does
 
