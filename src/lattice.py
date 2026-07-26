@@ -1,5 +1,6 @@
 import numpy as np
 import cupy as cp
+from typing import Tuple
 
 class SpinLattice:
     """
@@ -44,16 +45,14 @@ class SpinLattice:
         norms = cp.linalg.norm(spins, axis=-1, keepdims=True)
         return spins / cp.maximum(norms, 1e-12)
 
-    def get_roll_neighbors(self, spins: cp.ndarray) -> cp.ndarray:
+    def get_roll_neighbors(self, spins: cp.ndarray) -> Tuple[cp.ndarray, cp.ndarray, cp.ndarray, cp.ndarray]:
         """
-        Calculates the sum of the 4 nearest neighbors using periodic boundary conditions 
-        via numpy.roll. This vectorization avoids slow Python loops and serves as 
-        the conceptual blueprint for future GPU index-offset implementations.
+        Calculates the 4 nearest neighbors individually using periodic boundary conditions 
+        via cp.roll, returning them as separate arrays (Top, Bottom, Left, Right).
         """
-        neighbors_sum = (
-            cp.roll(spins, shift=1, axis=0) +  # Top / Up
-            cp.roll(spins, shift=-1, axis=0) + # Bottom / Down
-            cp.roll(spins, shift=1, axis=1) +  # Left
-            cp.roll(spins, shift=-1, axis=1)   # Right
-        )
-        return neighbors_sum
+        neighbor_top = cp.roll(spins, shift=1, axis=0)
+        neighbor_bottom = cp.roll(spins, shift=-1, axis=0)
+        neighbor_left = cp.roll(spins, shift=1, axis=1)
+        neighbor_right = cp.roll(spins, shift=-1, axis=1)
+        
+        return neighbor_top, neighbor_bottom, neighbor_left, neighbor_right
