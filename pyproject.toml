@@ -8,4 +8,5 @@ dependencies = [
     "cupy-cuda12x>=14.1.1",
     "matplotlib>=3.11.1",
     "numpy>=2.5.1",
+    "typing>=3.10.0.0",
 ]
