@@ -53,7 +53,7 @@ class Hamiltonian:
             # bulk DMI
             h_eff += 2 * self.D * cp.cross( (right - left), e_x)
             h_eff += 2 * self.D * cp.cross( (top - bottom), e_y)
-        elif self.dmi_type == 'interfacial':
+        elif self.dmi_type == 'interfacial' or self.dmi_type == 'if':
             # interfacial DMI
             h_eff += 2 * self.D * cp.cross( (right - left), e_y)
             h_eff -= 2 * self.D * cp.cross( (top - bottom), e_x)

@@ -11,19 +11,29 @@ import cupy as cp
 def run_simulation() -> None:
     # 1. Simulation Parameters
     Lx, Ly = 128,128
-    total_steps = 2000
+    total_steps = 4000
     dt = 0.01
     save_interval = 500
 
     # and system parameters
     J = 1.0
     DMI = 0.18
-    dmi_type = 'bulk'
-    B = 0.1
+    dmi_type = 'if'
+    B = 0.05
     alpha = 0.1
 
     # 2. Initialize Modules
     lattice = SpinLattice(Lx, Ly)
+    lattice.initialize_ferromagnetic()
+
+    # customize lattice
+    custom_spins = np.zeros((Lx, Ly, 3))
+    custom_spins[:,:,2] = 1
+    custom_spins[50:60, 50:60, 2] = -1
+
+    # set lattice to customized lattice
+    lattice.set_custom_state(custom_spins)
+
     hamiltonian = Hamiltonian(J=J, D=DMI, dmi_type=dmi_type, 
                               B=B, alpha=alpha)
     solver = RungeKutta4Solver(lattice, hamiltonian)

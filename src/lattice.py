@@ -1,17 +1,50 @@
 import numpy as np
 import cupy as cp
-from typing import Tuple
+from typing import Tuple, Union
 
 class SpinLattice:
     """
     Manages the 2D square lattice geometry, boundary conditions, 
-    and the magnetic moment vectors (M_i).
+    and the magnetic moment vectors (M_i). 
+    Initialized by default in a ferromagnetic state.
     """
     
-    def __init__(self, Lx: int, Ly: int):
+    def __init__(self, Lx: int, Ly: int, init_direction: cp.ndarray = cp.array([0.0, 0.0, 1.0])):
+        """
+        Initializes the spin lattice with dimensions (Lx, Ly).
+        By default, it creates a homogeneous ferromagnetic state pointing along init_direction (default: +z).
+        """
         self.Lx = Lx
         self.Ly = Ly
-        self.spins = self.initialize_random()
+        self.spins = self.initialize_ferromagnetic(init_direction)
+
+    def set_state(self, state_type: str = 'ferromagnetic', **kwargs) -> None:
+        """
+        Resets or changes the lattice state to a predefined type ('random' or 'ferromagnetic').
+        
+        Parameters:
+        - state_type: 'random' or 'ferromagnetic' (or 'fm')
+        - kwargs: Additional arguments like 'direction' for ferromagnetic.
+        """
+        if state_type == 'random':
+            self.spins = self.initialize_random()
+        elif state_type in ['ferromagnetic', 'fm']:
+            direction = kwargs.get('direction', cp.array([0.0, 0.0, 1.0]))
+            self.spins = self.initialize_ferromagnetic(direction)
+        else:
+            raise ValueError(f"Unknown state_type: '{state_type}'. Choose 'random' or 'ferromagnetic'.")
+
+    def set_custom_state(self, custom_spins: Union[cp.ndarray, np.ndarray]) -> None:
+        """
+        Sets the lattice state using a user-provided custom spin array of shape (Lx, Ly, 3).
+        """
+        if isinstance(custom_spins, np.ndarray):
+            custom_spins = cp.asarray(custom_spins)
+            
+        if custom_spins.shape != (self.Lx, self.Ly, 3):
+            raise ValueError(f"Shape of custom_spins {custom_spins.shape} must match ({self.Lx}, {self.Ly}, 3)")
+            
+        self.spins = self._normalize(custom_spins)
 
     def initialize_random(self) -> cp.ndarray:
         """
