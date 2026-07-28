@@ -83,9 +83,9 @@ class SpinLattice:
         Calculates the 4 nearest neighbors individually using periodic boundary conditions 
         via cp.roll, returning them as separate arrays (Top, Bottom, Left, Right).
         """
-        neighbor_top = cp.roll(spins, shift=1, axis=0)
-        neighbor_bottom = cp.roll(spins, shift=-1, axis=0)
-        neighbor_left = cp.roll(spins, shift=1, axis=1)
-        neighbor_right = cp.roll(spins, shift=-1, axis=1)
+        neighbor_top = cp.roll(spins, shift=1, axis=1)
+        neighbor_bottom = cp.roll(spins, shift=-1, axis=1)
+        neighbor_left = cp.roll(spins, shift=1, axis=0)
+        neighbor_right = cp.roll(spins, shift=-1, axis=0)
         
         return neighbor_top, neighbor_bottom, neighbor_left, neighbor_right

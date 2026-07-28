@@ -16,10 +16,10 @@ class Hamiltonian:
     def __init__(
         self, 
         J: float = 1.0, 
-        D: float = 0.18,
-        B: float = 0.1,
-        alpha: float = 0.2,
-        gamma_prime: float = 1,
+        D: float = 0.0,
+        B: float = 0.0,
+        alpha: float = 0.0,
+        gamma_prime: float = 1.0,
         dmi_type: str = 'bulk'
     ):
         if dmi_type not in ['bulk', 'if']:
@@ -28,7 +28,7 @@ class Hamiltonian:
         self.J = J
         self.D = D
         self.dmi_type = dmi_type
-        self.external_field = B * cp.array([0.0, 0.0, 0.1], dtype=float)
+        self.external_field = B * cp.array([0.0, 0.0, 1.0], dtype=float)
         self.alpha = alpha
         self.gamma_prime = gamma_prime
 
@@ -66,7 +66,7 @@ class Hamiltonian:
     def llg_rhs(self, t: float, spins: cp.ndarray, lattice: SpinLattice) -> cp.ndarray:
         """
         Calculates the right-hand side (RHS) of the Landau-Lifshitz-Gilbert equation:
-        dM/dt = -gamma_prime (M x H_eff) - alpha * gamma_prime (M x (M x H_eff))
+        dM/dt = ( -gamma_prime (M x H_eff) - alpha (M x (M x H_eff)) ) / (1 + alpha**2)
         """
         h_eff = self.compute_effective_field(spins, lattice)
         
@@ -75,7 +75,6 @@ class Hamiltonian:
         m_cross_m_cross_h = cp.cross(spins, m_cross_h)
         
         # Standard LLG prefactors (normalized gyromagnetic ratio terms)
-        gamma_prime = 1.0 / (1.0 + self.alpha**2)
-        dmdt = -gamma_prime * (m_cross_h + self.alpha * m_cross_m_cross_h)
+        dmdt = -self.gamma_prime * (m_cross_h + self.alpha * m_cross_m_cross_h) / (1.0 + self.alpha**2)
         
         return dmdt

@@ -22,10 +22,10 @@ class LatticeAnalyzer:
         q(x,y) = M (dM/dx times dM/dy)
         """
         # Computing neighbors assuming periodic boundary conditions
-        top = cp.roll(self.spins, shift=1, axis=0)
-        bottom = cp.roll(self.spins, shift=-1, axis=0)
-        left = cp.roll(self.spins, shift=1, axis=1)
-        right = cp.roll(self.spins, shift=-1, axis=1)
+        top = cp.roll(self.spins, shift=1, axis=1)
+        bottom = cp.roll(self.spins, shift=-1, axis=1)
+        left = cp.roll(self.spins, shift=1, axis=0)
+        right = cp.roll(self.spins, shift=-1, axis=0)
         
         term_x = 0.5 * (right - left)
         term_y = 0.5 * (top - bottom)

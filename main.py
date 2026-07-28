@@ -11,16 +11,16 @@ import cupy as cp
 def run_simulation() -> None:
     # 1. Simulation Parameters
     Lx, Ly = 128,128
-    total_steps = 4000
+    total_steps = 10000
     dt = 0.01
-    save_interval = 500
+    save_interval = 2000
 
     # and system parameters
     J = 1.0
-    DMI = 0.18
+    DMI = 0.08
     dmi_type = 'if'
-    B = 0.05
-    alpha = 0.1
+    B = 0.02
+    alpha = 0.05
 
     # 2. Initialize Modules
     lattice = SpinLattice(Lx, Ly)
