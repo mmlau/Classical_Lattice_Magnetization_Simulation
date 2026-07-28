@@ -4,21 +4,33 @@ from src.lattice import SpinLattice
 
 class Hamiltonian:
     """
-    Manages the physical energy terms: exchange interaction, external field, DMI
-    and computes the effective field and the Landau-Lifshitz-Gilbert (LLG) dynamics.
+    Manages the physical energy terms: 
+    Exchange interaction with parameter J, 
+    DMI with parameter D and DMI type dmi_type bulk or if,
+    External field in z direction with parameter B
+    And it computes the effective field and the Landau-Lifshitz-Gilbert (LLG) dynamics with parameters:
+    Gilber damping alpha,
+    The precessional term gamma prime.
     """
     
     def __init__(
         self, 
         J: float = 1.0, 
         D: float = 0.18,
-        external_field: cp.ndarray = cp.array([0.0, 0.0, 0.1], dtype=float), 
-        alpha: float = 0.2
+        B: float = 0.1,
+        alpha: float = 0.2,
+        gamma_prime: float = 1,
+        dmi_type: str = 'bulk'
     ):
-        self.J = J  # Exchange constant
-        self.D = D # DMI constant
-        self.external_field = external_field  # External potential / magnetic field
-        self.alpha = alpha  # Gilbert damping parameter
+        if dmi_type not in ['bulk', 'if']:
+            raise ValueError(f"Invalid dmi_type: '{dmi_type}'. Must be either 'bulk' or 'if'.")
+        
+        self.J = J
+        self.D = D
+        self.dmi_type = dmi_type
+        self.external_field = B * cp.array([0.0, 0.0, 0.1], dtype=float)
+        self.alpha = alpha
+        self.gamma_prime = gamma_prime
 
     def compute_effective_field(self, spins: cp.ndarray, lattice: SpinLattice) -> cp.ndarray:
         """
@@ -33,13 +45,21 @@ class Hamiltonian:
         neighbor_sum = top + bottom + left + right
         
         # H_eff = J * sum(M_neighbors) + DMI + B_ext
+        # Exchange interaction
         h_eff = self.J * neighbor_sum 
 
-        # Using bulk DMI for now
-        h_eff += 2 * self.D * cp.cross( (right - left), e_x)
-        h_eff += 2 * self.D * cp.cross( (top - bottom), e_y)
-        h_eff += self.external_field
+        # DMI implementation based on type
+        if self.dmi_type == 'bulk':
+            # bulk DMI
+            h_eff += 2 * self.D * cp.cross( (right - left), e_x)
+            h_eff += 2 * self.D * cp.cross( (top - bottom), e_y)
+        elif self.dmi_type == 'interfacial':
+            # interfacial DMI
+            h_eff += 2 * self.D * cp.cross( (right - left), e_y)
+            h_eff -= 2 * self.D * cp.cross( (top - bottom), e_x)
 
+        # external magnetic field
+        h_eff += self.external_field
 
         return h_eff
 

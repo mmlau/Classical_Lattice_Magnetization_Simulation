@@ -3,6 +3,7 @@ from src.hamiltonian import Hamiltonian
 from src.solver import RungeKutta4Solver
 from src.io_handler import IOHandler
 from src.visualizer import Visualizer
+from src.analyzer import LatticeAnalyzer
 
 import numpy as np
 import cupy as cp
@@ -10,13 +11,21 @@ import cupy as cp
 def run_simulation() -> None:
     # 1. Simulation Parameters
     Lx, Ly = 128,128
-    total_steps = 4000
+    total_steps = 2000
     dt = 0.01
     save_interval = 500
 
+    # and system parameters
+    J = 1.0
+    DMI = 0.18
+    dmi_type = 'bulk'
+    B = 0.1
+    alpha = 0.1
+
     # 2. Initialize Modules
     lattice = SpinLattice(Lx, Ly)
-    hamiltonian = Hamiltonian(J=1.0, alpha=0.1)
+    hamiltonian = Hamiltonian(J=J, D=DMI, dmi_type=dmi_type, 
+                              B=B, alpha=alpha)
     solver = RungeKutta4Solver(lattice, hamiltonian)
     io_handler = IOHandler(output_dir="output")
 
@@ -43,6 +52,14 @@ def run_simulation() -> None:
     lattice_spins_cpu = cp.asnumpy(lattice.spins)
     Visualizer.plot_vector_field(lattice_spins_cpu, title=f"Final State (t = {t:.2f})")
     print("Simulation finished successfully.")
+
+    # 6. Calculate and visualiz topological charge density
+    analyzer = LatticeAnalyzer(spins=lattice.spins)
+    charge_density = analyzer.compute_topological_charge_density()
+    total_top_charge = analyzer.compute_total_topological_charge()
+    print(f'Total topological charge Q = {total_top_charge}')
+    Visualizer.plot_scalar_field( field=cp.asnumpy(charge_density) )
+
 
 if __name__ == "__main__":
     run_simulation()

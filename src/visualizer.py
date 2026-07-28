@@ -36,3 +36,23 @@ class Visualizer:
         plt.ylabel("Y Position")
         plt.tight_layout()
         plt.show()
+
+    def plot_scalar_field(field: np.ndarray, title: str = "Topological Charge Density", cmap: str = "coolwarm"):
+        """
+        Plots a 2D scalar field (e.g., topological charge density) using Matplotlib.
+        
+        Parameters:
+        - field: Numpy array of shape (Lx, Ly) representing the scalar field.
+        - title: Title of the plot.
+        - cmap: Colormap for the heatmap (e.g., 'coolwarm', 'viridis', 'seismic').
+        """
+
+        plt.figure(figsize=(6, 5))
+        im = plt.imshow(field, origin='lower', cmap=cmap)
+        
+        plt.colorbar(im, label="Density")
+        plt.title(title)
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.tight_layout()
+        plt.show()
