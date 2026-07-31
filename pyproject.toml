@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "cupy-cuda12x>=14.1.1",
+    "ipykernel>=7.3.0",
     "matplotlib>=3.11.1",
     "numpy>=2.5.1",
     "typing>=3.10.0.0",
