@@ -21,7 +21,7 @@ The software simulates the dynamic behavior of magnetic moments on a 2D square l
 Please note that this is an **initial, preliminary version** of the software. 
 
 * **Active Development:** I am continuously working on expanding the codebase.
-* **Upcoming Features:** Future updates will introduce richer physical effects (such as magnetic anisotropy) and more advanced data handling routines for efficient input/output management.
+* **Upcoming Features:** Future updates will introduce richer physical effects (such as spin transfer torques) and more advanced data handling routines for efficient input/output management.
 
 ---
 
