@@ -12,16 +12,13 @@ This repository is a private project where I use that scientific expertise to bu
 
 ## What the Program Does
 
-The software simulates the dynamic behavior of magnetic moments on a 2D square lattice by numerically integrating the **Landau-Lifshitz-Gilbert (LLG) equation**. It computes effective magnetic fields (up to now only including exchange interactions and external magnetic fields) and tracks the evolution of spin states over time, utilizing GPU acceleration for efficient computation and performance.
+The software simulates the dynamic behavior of magnetic moments on a 2D square lattice by numerically integrating the **Landau-Lifshitz-Gilbert (LLG) equation** including a spin transfer torque (SST). It computes effective magnetic fields and tracks the evolution of spin states over time, utilizing GPU acceleration for efficient computation and performance.
 
 ---
 
-## Current Status (v0.1 - Preliminary Release)
+## Evolving Project
 
-Please note that this is an **initial, preliminary version** of the software. 
-
-* **Active Development:** I am continuously working on expanding the codebase.
-* **Upcoming Features:** Future updates will introduce richer physical effects (such as spin transfer torques) and more advanced data handling routines for efficient input/output management.
+Please note that I am continuously working on expanding the codebase. This includes more efficient data handling, example notebooks, and bug fixes. Since this is a private project, there is no guarantee for a specific timeline or continuous maintenance.
 
 ---
 
@@ -34,9 +31,9 @@ Development of this project is carried out with the assistance of an AI collabor
 ## Installation & Getting Started
 
 1. Clone the repository:
-   ```bash
-   git clone [https://github.com/your-username/micromag-python.git](https://github.com/your-username/micromag-python.git)
-   cd micromag-python
+```bash
+git clone https://github.com/mmlau/Classical_Lattice_Magnetization_Simulation
+cd Classical_Lattice_Magnetization_Simulation
 
 2. install [uv](https://uv.dev) (if not already done) and synchronize the dependencies
 ```bash

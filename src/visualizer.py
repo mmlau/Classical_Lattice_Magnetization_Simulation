@@ -13,9 +13,9 @@ class Visualizer:
         Plots the in-plane magnetization components (mx, my) as a quiver (vector) plot 
         and the out-of-plane component (mz) as a colormap background.
         """
-        mx = spins[..., 0]
-        my = spins[..., 1]
-        mz = spins[..., 2]
+        mx = spins[..., 0].T
+        my = spins[..., 1].T
+        mz = spins[..., 2].T
         
         Ly, Lx = spins.shape[:2]
         x = np.arange(Lx)
@@ -48,7 +48,7 @@ class Visualizer:
         """
 
         plt.figure(figsize=(6, 5))
-        im = plt.imshow(field, origin='lower', cmap=cmap)
+        im = plt.imshow(field.T, origin='lower', cmap=cmap)
         
         plt.colorbar(im, label="Density")
         plt.title(title)
