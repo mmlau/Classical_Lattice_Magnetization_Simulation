@@ -34,6 +34,7 @@ Development of this project is carried out with the assistance of an AI collabor
 ```bash
 git clone https://github.com/mmlau/Classical_Lattice_Magnetization_Simulation
 cd Classical_Lattice_Magnetization_Simulation
+```
 
 2. install [uv](https://uv.dev) (if not already done) and synchronize the dependencies
 ```bash
